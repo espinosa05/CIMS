@@ -35,7 +35,7 @@
 #define INACTIVE !ACTIVE
 
 /* keep track of the interfaces inside a loop */
-#define IS_IF_END(_if_) ((_if_)->if_name != NULL || (_if_)->if_index != 0)
+#define IS_IF_END(_if_) ((_if_)->if_name == NULL && (_if_)->if_index == 0)
 
 struct server_info {
     int fd;             /* socket fd */
@@ -208,7 +208,7 @@ static int is_valid_if_name(char *if_name_str)
 
     if_names = if_nameindex();
 
-    for (if_name = if_names; IS_IF_END(if_name) || if_names == NULL; if_name++) {
+    for (if_name = if_names; !IS_IF_END(if_name); if_name++) {
         if (!strcmp(if_names->if_name, if_name_str)) {
             ret = TRUE;
             break;
