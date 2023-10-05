@@ -2,7 +2,7 @@ CC=gcc
 CIMS_VERSION_DEFS=-DCIMS_VERSION_MAJOR=0 -DCIMS_VERSION_MINOR=0 \
 				  -DCIMS_VERSION_CODENAME="\"basilisk\""
 
-CFLAGS=-Wall -O0 -I ../include -g
+CFLAGS=-Wall -std=gnu99 -O0 -I ../include -g
 SRC=main.c server.c cims.c
 
 all: out/CIMS_server

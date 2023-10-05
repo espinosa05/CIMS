@@ -16,6 +16,12 @@ static ssize_t recursive_chown(char *dir_path, uid_t owner, gid_t group);
 static int is_delim(char c, char *delim, int len);
 /* static function declarations end */
 
+struct env_data {
+    size_t env_count;
+    char env_list[];
+};
+
+
 void impl_cims_assert(char *expr, int eval, char *file, int line, char *function, char *err_fmt, ...)
 {
     if (!eval) {
@@ -72,6 +78,44 @@ int cims_open_logfile(FILE **logfile)
     *logfile = fopen(CIMS_SERVER_LOGFILE_PATH, "w+");
 
     return *logfile != NULL;
+}
+
+/* set system variables E.g: */
+int cims_export_env()
+{
+    const char *shell = getenv("SHELL");
+    cims_assert(shell != NULL, "failed to get $SHELL variable... what are you running this under?");
+
+#if 0
+    if (!strcmp(shell, "/bin/bash"))
+        export_env_for_bash();
+
+    else if (!strcmp(shell, "/bin/sh"))
+        export_env_for_sh();
+
+    else if (!strcmp(shell, "/bin/zsh"))
+        export_env_for_zsh();
+
+    else
+        return FALSE;
+#endif
+
+    return TRUE;
+}
+
+static void export_env_for_bash()
+{
+    TODO(FUNC_IMPL_WARNING());
+}
+
+static void export_env_for_sh()
+{
+    TODO(FUNC_IMPL_WARNING());
+}
+
+static void export_env_for_zsh()
+{
+    TODO(FUNC_IMPL_WARNING());
 }
 
 static ssize_t recursive_chown(char *dir_path, uid_t owner, gid_t group)
