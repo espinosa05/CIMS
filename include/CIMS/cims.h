@@ -25,7 +25,7 @@ struct env_data;
 
 #define STRING_SYMBOL(sym) #sym
 #define FMTARGS(...) __VA_ARGS__ /* i find this readable */
-#define FUNC_IMPL_WARNING() FMTARGS("Function %s on line %d needs implementation", __func__, __LINE__ - 2)
+#define FUNC_IMPL_WARNING() FMTARGS("Function %s in file %s on line %d needs implementation\n", __func__, __FILE__, __LINE__ - 2)
 #define FUNC_RETURN_FMT(fn, rt) FMTARGS(#fn " returned: %d", rt)
 #define TODO(...) printf("[TODO] ");printf(__VA_ARGS__)
 
@@ -50,8 +50,6 @@ struct env_data;
 #define INFO_HEADER " Additional info: "
 #define BUG_MSG "<THIS IS A SOFTWARE BUG> PLEASE CONTACT THE DEVELOPER"
 /* core macros end */
-
-
 
 /* cims data */
 #define CIMS_FALLBACK_ADDR "0.0.0.0"

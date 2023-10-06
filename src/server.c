@@ -67,7 +67,7 @@ enum option_idx {
 };
 
 /* static function declaration start */
-static void parse_args(Server_Info server, int cnt, char **v);
+static void parse_args(Server_Info server, const int cnt, const char **v);
 static void parse_sys_env(Server_Info server);
 static int is_loopback(struct sockaddr *addr_p) __attribute__((deprecated));
 static int is_ipv4(char *addr);
@@ -76,6 +76,7 @@ static int is_valid_if_name(char *name);
 static int has_data_path();
 static int env_exported();
 static void list_options(struct option *options, int count);
+static void list_interfaces();
 static void set_cli_mode(Server_Info server);
 static void server_log(Server_Info server, char *str);
 static void server_log_fmt(Server_Info server, char *fmt, ...);
@@ -220,7 +221,7 @@ static int is_valid_if_name(char *if_name_str)
     return ret;
 }
 
-static void parse_args(Server_Info server, int cnt, char **v)
+static void parse_args(Server_Info server, const int cnt, const char **v)
 {
 
     int option_index = 0;
@@ -266,7 +267,7 @@ static void parse_args(Server_Info server, int cnt, char **v)
             server->address.sin_addr.s_addr = inet_addr(optarg);
             break;
         case LIST_IF_FLAG:      // NORETURN
-            TODO("implement " STRING_SYMBOL(LIST_IF_FLAG));
+            list_interfaces();
             exit(EXIT_SUCCESS);
         case VERBOSE_FLAG:
             server->verbose_log = ACTIVE;
@@ -285,11 +286,14 @@ static void parse_args(Server_Info server, int cnt, char **v)
             TODO("implement " STRING_SYMBOL(DEVICE_FLAG));
             break;
         case EXPORT_FLAG:   // NORETURN
-     //       export_env();
+    //        export_env();
             exit(EXIT_SUCCESS);
             break;
-        case '?':               // NORETURN
-            printf("unrecognized option: \"%s\"\n", v[option_index + 1]);
+        case '?':           // NORETURN
+            if (cnt > option_index)
+                option_index++;
+
+            printf("unrecognized option: \"%s\"\n", v[option_index]);
         default:
             exit(EXIT_FAILURE);
         }
@@ -298,7 +302,7 @@ static void parse_args(Server_Info server, int cnt, char **v)
 
 static void list_options(struct option *options, int count)
 {
-    char descriptions[] = {
+    char *descriptions[] = {
         [HEADLESS_IDX]  = "run the server in headless mode",
         [HELP_IDX]      = "list available options",
         [LOCAL_IDX]     = "run the server locally",
@@ -308,13 +312,21 @@ static void list_options(struct option *options, int count)
         [VERSION_IDX]   = "print current version",
         [PORT_IDX]      = "specify a port on which the server listens",
         [DEVICE_IDX]    = "specify a network device on which the server listens",
+        [EXPORT_IDX]    = "export only the environent variables for the system",
     };
 
+
+    cims_assert(count == ARRAY_SIZE(descriptions), BUG_MSG);
+
     for (int i = 0; i < count; ++i) {
-        printf("%s:\t%s\n", options[i].name, descriptions[i]);
+        printf("\t-%s : %10s\n", options[i].name, descriptions[i]);
     }
 }
 
+static void list_interfaces()
+{
+
+}
 
 static int is_valid_port(int port)
 {
