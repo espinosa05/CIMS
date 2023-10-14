@@ -17,7 +17,7 @@ typedef struct client_info *Client_Info;
 /* server functions */
 Server_Info start_server();
 void stop_server(Server_Info server);
-void close_connection(Server_Info server);
+void close_connection(Client_Info client);
 Client_Info accept_connection(Server_Info server);
 /* server functions end */
 

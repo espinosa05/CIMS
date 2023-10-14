@@ -6,6 +6,9 @@ CFLAGS=-Wall -std=gnu99 -O0 -I ../include -g
 SRC=main.c server.c cims.c
 
 all: out/CIMS_server
+
+run: all
+	out/CIMS_server -verbose
 clean: out
 	rm -rf $^
 out:

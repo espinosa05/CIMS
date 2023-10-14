@@ -13,7 +13,7 @@ int main(int argc, char **argv)
         Client_Info client;
 
         client = accept_connection(server);
-
+        close_connection(client);
     }
 
     stop_server(server);

@@ -78,6 +78,7 @@ static int env_exported();
 static void list_options(struct option *options, int count);
 static void list_interfaces();
 static void set_cli_mode(Server_Info server);
+static void send_msg(Server_Info server, Client_Info client, char *message);
 static void server_log(Server_Info server, char *str);
 static void server_log_fmt(Server_Info server, char *fmt, ...);
 static void server_error(Server_Info, char *str);
@@ -126,6 +127,8 @@ Server_Info start_server(int c, char **v)
     parse_args(server, c, v);
 
     cims_assert(server->log_file != NULL, "server log file NULL");
+
+    ASSERT_SYSCALL(setsockopt(server->fd, SOL_SOCKET, SO_REUSEADDR, (void *) &(int) { 1 }, sizeof(int)));
     ASSERT_SYSCALL(bind(server->fd, (SA *)&(server->address), sizeof(server->address)));
     ASSERT_SYSCALL(listen(server->fd, server->backlog));
 
@@ -142,11 +145,16 @@ Client_Info accept_connection(Server_Info server)
         inet_ntop(AF_INET, &(client->address.sin_addr.s_addr), ip, INET_ADDRSTRLEN);
         server_log_fmt(server, "connection from %s", ip);
     }
+
     ASSERT_RC(client->fd);
 
     return client;
 }
 
+void close_connection(Client_Info client)
+{
+    close(client->fd);
+}
 void stop_server(Server_Info server)
 {
     server_log(server, "shutting down...");
@@ -367,6 +375,13 @@ static void set_cli_mode(Server_Info server)
 {
     server->mode = CLI_MODE;
     server_log_fmt(server, "set mode to: \t%s", STRING_SYMBOL(CLI_MODE));
+}
+
+static void send_msg(Server_Info server, Client_Info client, char *message)
+{
+    server_log_fmt(server, "sending message:\"%s\"", message);
+    dprintf(client->fd, "%s", message);
+
 }
 
 static void server_error(Server_Info server, char *str)
