@@ -144,6 +144,7 @@ Client_Info accept_connection(Server_Info server)
         char ip[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client->address.sin_addr.s_addr), ip, INET_ADDRSTRLEN);
         server_log_fmt(server, "connection from %s", ip);
+        send_msg(server, client, "Duc likes to suck dick");
     }
 
     ASSERT_RC(client->fd);
