@@ -77,7 +77,7 @@ int cims_open_logfile(FILE **logfile)
 {
     *logfile = fopen(CIMS_SERVER_LOGFILE_PATH, "w+");
 
-    return *logfile != NULL;
+    return NULL != *logfile;
 }
 
 /* set system variables E.g: */
@@ -95,7 +95,7 @@ static ssize_t recursive_chown(char *dir_path, uid_t owner, gid_t group)
     dir_ptr = opendir(dir_path);
 
     /* NOTE: the program WILL fail if either the opening or modifying fails */
-    cims_assert(dir_ptr != NULL, "cannot open DIR \"%s\" for chown", dir_path);
+    cims_assert(NULL != dir_ptr, "cannot open DIR \"%s\" for chown", dir_path);
 
     ASSERT_SYSCALL(chown(dir_path, owner, group));
 
@@ -133,7 +133,7 @@ void core_cims_strncreat(char *buff, char **arr)
     strcpy(buff, arr[0]);
     NULL_TERM_BUFF(buff, strlen(arr[0]));
 
-    for (int i = 1; arr[i] != NULL; ++i)
+    for (int i = 1; NULL != arr[i]; ++i)
         strcat(buff, arr[i]);
 }
 
