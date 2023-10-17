@@ -83,39 +83,8 @@ int cims_open_logfile(FILE **logfile)
 /* set system variables E.g: */
 int cims_export_env()
 {
-    const char *shell = getenv("SHELL");
-    cims_assert(shell != NULL, "failed to get $SHELL variable... what are you running this under?");
-
-#if 0
-    if (!strcmp(shell, "/bin/bash"))
-        export_env_for_bash();
-
-    else if (!strcmp(shell, "/bin/sh"))
-        export_env_for_sh();
-
-    else if (!strcmp(shell, "/bin/zsh"))
-        export_env_for_zsh();
-
-    else
-        return FALSE;
-#endif
 
     return TRUE;
-}
-
-static void export_env_for_bash()
-{
-    TODO(FUNC_IMPL_WARNING());
-}
-
-static void export_env_for_sh()
-{
-    TODO(FUNC_IMPL_WARNING());
-}
-
-static void export_env_for_zsh()
-{
-    TODO(FUNC_IMPL_WARNING());
 }
 
 static ssize_t recursive_chown(char *dir_path, uid_t owner, gid_t group)
