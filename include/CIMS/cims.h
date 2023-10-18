@@ -65,7 +65,7 @@ struct env_data;
 
 
 /* cims functions */
-void impl_cims_assert(char *expr, int eval, char *file, int line, char *function, char *err_fmt, ...) __attribute__((printf(5, 6)));
+void impl_cims_assert(char *expr, int eval, char *file, int line, char *function, char *err_fmt, ...) _printf(5, 6);
 
 
 #define cims_assert(expr, ...) impl_cims_assert(#expr, (expr), __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
