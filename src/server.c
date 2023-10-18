@@ -69,20 +69,20 @@ enum option_idx {
 /* static function declaration start */
 static void parse_args(Server_Info server, const int cnt, const char **v);
 static void parse_sys_env(Server_Info server);
-static int is_loopback(struct sockaddr *addr_p) __attribute__((deprecated));
+static int is_loopback(struct sockaddr *addr_p) _deprecated;
 static int is_ipv4(char *addr);
 static int is_valid_port(int port);
 static int is_valid_if_name(char *name);
 static int has_data_path();
 static int env_exported();
 static void list_options(struct option *options, int count);
-static void list_interfaces();
+static void list_interfaces() _deprecated;
 static void set_cli_mode(Server_Info server);
 static void send_msg(Server_Info server, Client_Info client, char *message);
 static void server_log(Server_Info server, char *str);
-static void server_log_fmt(Server_Info server, char *fmt, ...);
+static void server_log_fmt(Server_Info server, char *fmt, ...) _printf(2, 3);
 static void server_error(Server_Info, char *str);
-static void server_error_fmt(Server_Info server, char *fmt, ...);
+static void server_error_fmt(Server_Info server, char *fmt, ...) _printf(2, 3);
 /* static function declaration end */
 
 Server_Info start_server(int c, char **v)

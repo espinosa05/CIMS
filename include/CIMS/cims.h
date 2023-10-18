@@ -6,13 +6,17 @@
 #include <stddef.h>
 #include <sys/types.h>
 
+/* CIMS attributes */
+#define _deprecated __attribute__((deprecated))
+#define _inline __attribute__((always_inline))
+#define _printf(_arg_start, _arg_end) __attribute__((printf(_arg_start, _arg_end)))
+/* CIMS attributes end */
+
 /* CIMS types */
 struct env_data;
 #define Env_Data struct env_data *
 #define SA struct sockaddr /* not to be used as a type but rather as a shorthand for (struct sockaddr *) casts */
 /* CIMS types end */
-
-
 
 /* core macros */
 #define CIMS_PORT (4035)
@@ -27,7 +31,7 @@ struct env_data;
 #define FMTARGS(...) __VA_ARGS__ /* i find this readable */
 #define FUNC_IMPL_WARNING() FMTARGS("Function %s in file %s on line %d needs implementation\n", __func__, __FILE__, __LINE__ - 2)
 #define FUNC_RETURN_FMT(fn, rt) FMTARGS(#fn " returned: %d", rt)
-#define TODO(...) printf("[TODO] ");printf(__VA_ARGS__)
+#define TODO(...) printf("[TODO] "); printf(__VA_ARGS__)
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
