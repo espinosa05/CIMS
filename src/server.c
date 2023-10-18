@@ -102,6 +102,7 @@ Server_Info start_server(int c, char **v)
     ASSERT_RC(server->fd);
 
     cims_open_logfile(&server->log_file);
+    cims_assert(server->log_file != NULL, "failed to open server logfile: %s", strerror(errno));
 
     /* the Server data is created as followed:
      *
@@ -124,8 +125,6 @@ Server_Info start_server(int c, char **v)
     parse_sys_env(server);
     /* override with user submitted values */
     parse_args(server, c, v);
-
-    cims_assert(server->log_file != NULL, "server log file NULL");
 
     ASSERT_SYSCALL(setsockopt(server->fd, SOL_SOCKET, SO_REUSEADDR, (void *) &(int) { 1 }, sizeof(int)));
     ASSERT_SYSCALL(bind(server->fd, (SA *)&(server->address), sizeof(server->address)));
