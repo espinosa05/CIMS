@@ -153,6 +153,7 @@ Client_Info accept_connection(Server_Info server)
 void close_connection(Client_Info client)
 {
     close(client->fd);
+    free(client);
 }
 void stop_server(Server_Info server)
 {
