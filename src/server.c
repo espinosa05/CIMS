@@ -87,7 +87,7 @@ static void server_error_fmt(Server_Info server, char *fmt, ...);
 
 Server_Info start_server(int c, char **v)
 {
-    Server_Info server = calloc(1, sizeof(struct server_info));
+    Server_Info server = core_cims_calloc(1, sizeof(struct server_info));
 
     if (!env_exported()) {
         /* equal to '$ CIMS_Server -export_env' */
@@ -118,7 +118,6 @@ Server_Info start_server(int c, char **v)
 
     server->backlog = CIMS_BACKLOG;
     server->mode = GFX_MODE; /* default to gfx mode */
-
     server->verbose_log = INACTIVE;
 
     /* override with system values */
@@ -250,7 +249,7 @@ static void parse_args(Server_Info server, const int cnt, const char **v)
             [PORT_IDX]      = { "port",       required_argument,    0,      PORT_FLAG },
             [DEVICE_IDX]    = { "device",     required_argument,    0,      DEVICE_FLAG },
             [EXPORT_IDX]    = { "export_env", no_argument,          0,      EXPORT_FLAG },
-            { 0,            0,                  0,      0 },
+            { 0, 0, 0, 0 },
         };
 
         int c = getopt_long_only(cnt, v, "", options, &option_index);
