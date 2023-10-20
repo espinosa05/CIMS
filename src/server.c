@@ -360,8 +360,8 @@ static int env_exported()
 static int is_loopback(struct sockaddr *addr_p)
 {
     struct sockaddr_in addr = *(struct sockaddr_in *)addr_p;
+    static in_addr_t loopback_4_address = inet_addr("127.0.0.1");
 
-    in_addr_t loopback_4_address = inet_addr("127.0.0.1");
 
     return addr.sin_addr.s_addr == loopback_4_address;
 }
