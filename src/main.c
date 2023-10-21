@@ -8,13 +8,13 @@ int main(int argc, char **argv)
     server = start_server(argc, argv);
     print_success(server);
 
-    //while (1) {
+    while (1) {
 
         Client_Info client;
 
         client = accept_connection(server);
         close_connection(client);
-    //}
+    }
 
     stop_server(server);
 
