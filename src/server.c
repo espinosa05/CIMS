@@ -189,6 +189,7 @@ static void parse_sys_env(Server_Info server)
     };
 
     for (int i = 0; i < ARRAY_SIZE(cims_env_keys); ++i) {
+        
         env_value = getenv(cims_env_keys[i]);
 
         if (env_value == NULL)
@@ -196,8 +197,7 @@ static void parse_sys_env(Server_Info server)
 
         switch(i) {
         case CIMS_PORT_IDX:
-            cims_assert(is_valid_port(atoi(env_value)), "%s is not a valid port", env_value);
-            server->address.sin_port = atoi(env_value);
+            server->address.sin_port = htons(atoi(env_value));
             break;
         case CIMS_FALLBACK_ADDR_IDX:
             cims_assert(is_ipv4(env_value), "%s is not a valid ip address", env_value);
