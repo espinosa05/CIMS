@@ -177,37 +177,21 @@ static void parse_sys_env(Server_Info server)
      * */
     char *env_value = NULL;
 
-    enum cims_env_key_idx {
-        CIMS_PORT_IDX = 0,
-        CIMS_FALLBACK_ADDR_IDX,
-        CIMS_DEVICE_FLAG_IDX,
-    };
-
-    const char *cims_env_keys[] = {
-        STRING_SYMBOL(CIMS_PORT),
-        STRING_SYMBOL(CIMS_FALLBACK_ADDR),
-    };
-
-    for (int i = 0; i < ARRAY_SIZE(cims_env_keys); ++i) {
-        
-        env_value = getenv(cims_env_keys[i]);
-
-        if (env_value == NULL)
-            continue;
-
-        switch(i) {
-        case CIMS_PORT_IDX:
-            server->address.sin_port = htons(atoi(env_value));
-            break;
-        case CIMS_FALLBACK_ADDR_IDX:
-            cims_assert(is_ipv4(env_value), "%s is not a valid ip address", env_value);
-            server->address.sin_addr.s_addr = inet_addr(env_value);
-            break;
-        case CIMS_DEVICE_FLAG_IDX:
-            cims_assert(is_valid_if_name(env_value), "%s is not a valid interface", env_value);
-            server->interface_name = env_value;
-        }
+    if (NULL != (env_value = getenv(STRING_SYMBOL(CIMS_PORT)))) {
+        cims_assert(is_valid_port(atoi(env_value)), "%s is not a valid port", env_value);
+        server->address.sin_port = htons(atoi(env_value));
     }
+
+    if (NULL != (env_value = getenv(STRING_SYMBOL(CIMS_FALLBACK_ADDR)))) {
+        cims_assert(is_ipv4(env_value), "%s is not a valid ip address", env_value);
+        server->address.sin_addr.s_addr = inet_addr(env_value);
+    }
+
+    if (NULL != (env_value = getenv(STRING_SYMBOL(CIMS_DEVICE)))) {
+        cims_assert(is_valid_if_name(env_value), "%s is not a valid device name", env_value);
+        server->interface_name = env_value;
+    }
+
 }
 
 static int is_valid_if_name(char *if_name_str)
