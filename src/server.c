@@ -142,6 +142,7 @@ Client_Info accept_connection(Server_Info server)
         char ip[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(client->address.sin_addr.s_addr), ip, INET_ADDRSTRLEN);
         server_log_fmt(server, "connection from %s", ip);
+        printf("connection!");
         send_msg(server, client, "connection successful!");
     }
 
@@ -365,7 +366,6 @@ static void send_msg(Server_Info server, Client_Info client, char *message)
 {
     server_log_fmt(server, "sending message:\"%s\"", message);
     dprintf(client->fd, "%s", message);
-
 }
 
 static void server_error(Server_Info server, char *str)
@@ -376,11 +376,14 @@ static void server_error(Server_Info server, char *str)
 
 static void server_error_fmt(Server_Info server, char *fmt, ...)
 {
+    char *str;
     va_list args;
+
     va_start(args, fmt);
-    char str[256];
-    vsnprintf(str, sizeof(str), fmt, args);
+    vasprintf(&str, fmt, args);
     server_error(server, str);
+
+    free(str);
 }
 
 static void server_log(Server_Info server, char *str)
@@ -393,10 +396,13 @@ static void server_log(Server_Info server, char *str)
 
 static void server_log_fmt(Server_Info server, char *fmt, ...)
 {
+    char *str;
     va_list args;
+
     va_start(args, fmt);
-    char str[256];
-    vsnprintf(str, sizeof(str), fmt, args);
+    vasprintf(&str, fmt, args);
     server_log(server, str);
+
+    free(str);
 }
 
